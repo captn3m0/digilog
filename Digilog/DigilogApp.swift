@@ -151,6 +151,14 @@ struct ContentView: View {
             FooterView()
         }
         .padding(.top, 12)
+        .background(ArrowKeyHandler { direction in
+            guard let i = focusedRow else { return false }
+            switch direction {
+            case .up where i > 0: focusedRow = i - 1; return true
+            case .down where i < rowCount - 1: focusedRow = i + 1; return true
+            default: return false
+            }
+        })
         .onAppear { store.reload() }
     }
 
@@ -166,6 +174,36 @@ struct ContentView: View {
                 store.update(tab, index: i, row: r)
             }
         )
+    }
+}
+
+/// Catches ↑/↓ before they reach the focused TextField (which would otherwise
+/// move the caret). Returning true from `onArrow` swallows the key event.
+struct ArrowKeyHandler: NSViewRepresentable {
+    enum Direction { case up, down }
+    let onArrow: (Direction) -> Bool
+
+    func makeNSView(context: Context) -> NSView { KeyView(onArrow: onArrow) }
+    func updateNSView(_ nsView: NSView, context: Context) {}
+
+    final class KeyView: NSView {
+        let onArrow: (Direction) -> Bool
+        init(onArrow: @escaping (Direction) -> Bool) {
+            self.onArrow = onArrow
+            super.init(frame: .zero)
+        }
+        required init?(coder: NSCoder) { fatalError() }
+
+        // performKeyEquivalent fires before the focused responder sees the key,
+        // so we can intercept arrows even while a TextField is first responder.
+        override func performKeyEquivalent(with event: NSEvent) -> Bool {
+            guard event.type == .keyDown else { return false }
+            switch event.keyCode {
+            case 126: return onArrow(.up)
+            case 125: return onArrow(.down)
+            default: return false
+            }
+        }
     }
 }
 
