@@ -4,8 +4,6 @@ A minimal macOS menu bar task list, inspired by [Ugmonk Analog](https://ugmonk.c
 
 Three tabs — **Today**, **Next**, **Someday** — each with 10 fixed rows. Today resets at 4 AM local time. State lives as plain markdown files in `~/Documents/Digilog/`.
 
-See [SPEC.md](SPEC.md) for the full behavioral spec.
-
 ## Use
 
 Click the checklist icon in the menu bar. Type into any row, check off items as you go. That's it.

@@ -17,7 +17,7 @@ targets:
         LSUIElement: true
         CFBundleName: Digilog
         CFBundleDisplayName: Digilog
-        CFBundleShortVersionString: "0.1.0"
+        CFBundleShortVersionString: "1.0.0"
         CFBundleVersion: "1"
         NSHumanReadableCopyright: ""
     settings:
