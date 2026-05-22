@@ -1,0 +1,31 @@
+name: Digilog
+options:
+  bundleIdPrefix: in.captnemo
+  deploymentTarget:
+    macOS: "13.0"
+  createIntermediateGroups: true
+
+targets:
+  Digilog:
+    type: application
+    platform: macOS
+    sources:
+      - path: Digilog
+    info:
+      path: Digilog/Info.plist
+      properties:
+        LSUIElement: true
+        CFBundleName: Digilog
+        CFBundleDisplayName: Digilog
+        CFBundleShortVersionString: "0.1.0"
+        CFBundleVersion: "1"
+        NSHumanReadableCopyright: ""
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: in.captnemo.digilog
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
