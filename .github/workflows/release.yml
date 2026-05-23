@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions: {}
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build & publish macOS release
+    runs-on: macos-26
+    timeout-minutes: 30
+    permissions:
+      # Needed to create the GitHub Release and upload the .zip asset.
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Build
+        run: make build
+
+      - name: Package
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          ditto -c -k --sequesterRsrc --keepParent build/Build/Products/Release/Digilog.app "Digilog-${VERSION}.zip"
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(Digilog-*.zip)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "no release artifacts found" >&2
+            exit 1
+          fi
+          flags=(--generate-notes)
+          case "$TAG" in
+            *-*) flags+=(--prerelease) ;;
+          esac
+          gh release create "$TAG" "${flags[@]}" "${files[@]}"
