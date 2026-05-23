@@ -1,3 +1,8 @@
+---
+layout: default
+permalink: /
+---
+
 # Digilog
 
 A minimal macOS menu bar task list, inspired by [Ugmonk Analog](https://ugmonk.com/en-de/pages/analog).
