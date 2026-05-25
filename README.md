@@ -2,6 +2,8 @@
 
 A minimal macOS menu bar task list, inspired by [Ugmonk Analog](https://ugmonk.com/en-de/pages/analog).
 
+Download the latest releases from <https://github.com/captn3m0/digilog/releases/latest>. Homebrew Cask coming soon.
+
 ![screenshot of digilog](screenshot.png).
 
 Three tabs — **Today**, **Next**, **Someday** — each with 10 fixed rows. State lives as plain markdown files in `~/Documents/Digilog/`.
